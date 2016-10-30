@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "103A4D7D1DC518D2004FF801"
-               BuildableName = "Twitter.app"
-               BlueprintName = "Twitter"
-               ReferencedContainer = "container:Twitter.xcodeproj">
+               BlueprintIdentifier = "1C3436CEA5C3D39764C5F54374794ECB"
+               BuildableName = "AFNetworking.framework"
+               BlueprintName = "AFNetworking"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "103A4D7D1DC518D2004FF801"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "103A4D7D1DC518D2004FF801"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
+            BlueprintIdentifier = "1C3436CEA5C3D39764C5F54374794ECB"
+            BuildableName = "AFNetworking.framework"
+            BlueprintName = "AFNetworking"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "103A4D7D1DC518D2004FF801"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
