@@ -10,8 +10,8 @@ import UIKit
 import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
-    static let consumerKey: String = "33Sp8Lx26it146Eec7fHN6rWO"
-    static let consumerSecret: String = "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA"
+    static let consumerKey: String = "LQuzgzLBbZXt64rThNnW72pHx" // "33Sp8Lx26it146Eec7fHN6rWO"
+    static let consumerSecret: String = "OL5X9QImY03C5Av7KVMBSGL6uYIolbzH3RaePDQeIY4ruPgCOE" // "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA"
 
     static let sharedInstance: TwitterClient = TwitterClient(baseURL: URL(string: "https://api.twitter.com"), consumerKey: consumerKey, consumerSecret:consumerSecret)
     
@@ -61,6 +61,74 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         NotificationCenter.default.post(name: User.didLogoutNotification, object: nil)
     }
+    
+    func newTweet(tweetText text: String, success: @escaping (Void) -> Void , failure: @escaping (Error) -> Void) {
+        post("1.1/statuses/update.json", parameters: [ "status": text ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+            success()
+        }, failure: {(session: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+    }
+    
+    func markAsFavorite(tweet: Tweet, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
+        post("1.1/favorites/create.json", parameters: [ "id" : tweet.id ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+            if let tweetData = response as? NSDictionary {
+                success(Tweet(dictionary: tweetData))
+            }
+            else {
+                failure(NSError(domain: "Favorite response not parsable", code: 1, userInfo: nil))
+            }
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+    }
+    
+    func retweet(tweet: Tweet, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
+        if let id = tweet.id {
+            post("1.1/statuses/retweet/\(id).json", parameters: nil, progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+                if let tweetData = response as? NSDictionary {
+                    success(Tweet(dictionary: tweetData))
+                }
+                else {
+                    failure(NSError(domain: "Retweet response not parsable", code: 1, userInfo: nil))
+                }
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error)
+            })
+        }
+    }
+    
+    func unretweet(tweet: Tweet, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
+        if let id = tweet.id {
+            post("1.1/statuses/unretweet/\(id).json", parameters: nil, progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+                if let tweetData = response as? NSDictionary {
+                    success(Tweet(dictionary: tweetData))
+                }
+                else {
+                    failure(NSError(domain: "Unretweet response not parsable", code: 1, userInfo: nil))
+                }
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error)
+            })
+        }
+    }
+    
+    func reply(tweet: Tweet, withText reply: String, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
+        post("1.1/direct_message/new.json", parameters: [
+            "user_id": tweet.user?.id,
+            "screen_name": tweet.user?.screenName,
+            "text": reply], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+            if let tweetData = response as? NSDictionary {
+                success(Tweet(dictionary: tweetData))
+            }
+            else {
+                failure(NSError(domain: "Unretweet response not parsable", code: 1, userInfo: nil))
+            }
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+    }
+
     
     func handleOpenUrl(url: URL) {
         let requestToken = BDBOAuth1Credential(queryString: url.query)

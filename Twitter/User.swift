@@ -7,13 +7,22 @@
 //
 
 import UIKit
+import AFNetworking
 
 class User: NSObject {
     
+    var id: String?
     var name: String?
     var screenName: String?
     var profileImageUrl: URL?
     var tagline: String?
+    
+    var handle: String? {
+        if let screenName = self.screenName {
+            return "@\(screenName)"
+        }
+        return nil
+    }
     
     var dictionary: NSDictionary!
     
@@ -21,12 +30,20 @@ class User: NSObject {
         self.dictionary = dictionary
         
         // Deserialization.
+        id = dictionary["id_str"] as? String
         name = dictionary["name"] as? String
         screenName = dictionary["screen_name"] as? String
         if let profileImageUrlString = dictionary["profile_image_url_https"] as? String {
-            profileImageUrl = URL(string: profileImageUrlString)
-        }
+            profileImageUrl = URL(string: profileImageUrlString)        }
         tagline = dictionary["description"] as? String
+        
+    }
+    
+    func setProfileImage(image: UIImageView) {
+        if let profileImageUrl =
+            profileImageUrl {
+            image.setImageWith(profileImageUrl)
+        }
     }
     
     private static var _currentUser: User?

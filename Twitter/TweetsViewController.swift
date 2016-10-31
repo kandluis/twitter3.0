@@ -19,15 +19,19 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tableView.delegate = self
         tableView.dataSource = self
-        // Do any additional setup after loading the view, typically from a nib.
         
-        let client = TwitterClient.sharedInstance
-        client.homeTimeline(success: { (tweets: [Tweet]) in
-            self.tweets = tweets
-            self.tableView.reloadData()
-        }, failure: { (error: Error) in
-            print(error.localizedDescription)
-        })
+        // Auto-resize the cells.
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // UIRefresh
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshAction), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        // To show tweets.
+        refreshAction(refreshControl: refreshControl)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +51,37 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell") as! TweetCell
         cell.tweet = tweets![indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func refreshAction(refreshControl: UIRefreshControl) {
+        let client = TwitterClient.sharedInstance
+        client.homeTimeline(success: { (tweets: [Tweet]) in
+            self.tweets = tweets
+            self.tableView.reloadData()
+            refreshControl.endRefreshing()
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
+    }
+    
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? DetailsViewController {
+            if let cell = sender as? UITableViewCell {
+                if let indexPath = tableView.indexPath(for: cell) {
+                    vc.tweet = tweets?[indexPath.row]
+                }
+            }
+        }
+        
+     }
+    
+    @IBAction func onCompose(_ sender: Any) {
+        self.performSegue(withIdentifier: "composeSegue", sender: self)
     }
 }
 

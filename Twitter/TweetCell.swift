@@ -15,22 +15,18 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var tweetUserName: UILabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
     @IBOutlet weak var tweetTimestampLabel: UILabel!
+    @IBOutlet weak var tweetUserHandle: UILabel!
+    @IBOutlet weak var retweetLabel: UILabel!
+    @IBOutlet weak var favoriteLabel: UILabel!
+    
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var replyButton: UIButton!
     
     var tweet: Tweet! {
         didSet {
-            if let date = tweet.createdAt {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "DD/MM/YY"
-                tweetTimestampLabel.text = formatter.string(from: date)
-            }
-            tweetTextLabel.text = tweet.text
-            tweetUserName.text = tweet.user?.screenName
-            
-            // Avoid cell reuse issues.
-            tweetUserImage.image = nil
-            if let imageURL = tweet.user?.profileImageUrl {
-                tweetUserImage.setImageWith(imageURL)
-            }
+            reset()
+            displayTweet()
         }
     }
 
@@ -43,6 +39,41 @@ class TweetCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func displayTweet() {
+        // Reload new data.
+        tweetTextLabel.text = tweet.text
+        tweetTimestampLabel.text = tweet.timestamp()
+        tweetUserName.text = tweet.user?.name
+        tweetUserHandle.text = tweet.user?.handle
+        favoriteLabel.text = String(tweet.favoritesCount)
+        retweetLabel.text = String(tweet.retweetCount)
+        tweet.user?.setProfileImage(image: tweetUserImage)
+        
+        // Set images for tweet.
+        if tweet.favorited {
+            favoriteButton.setBackgroundImage(#imageLiteral(resourceName: "heart_colored"), for: .normal)
+        }
+        if tweet.retweeted {
+            retweetButton.setBackgroundImage(#imageLiteral(resourceName: "retweet_colored"), for: .normal)
+        }
+    }
+    
+    func reset() {
+        // Clear previous data
+        tweetTimestampLabel.text = ""
+        tweetUserName.text = ""
+        tweetTextLabel.text = ""
+        tweetUserImage.image = nil
+        tweetUserHandle.text = ""
+        favoriteLabel.text = "0"
+        retweetLabel.text = "0"
+        
+        // reset images
+        replyButton.setBackgroundImage(#imageLiteral(resourceName: "reply"), for: .normal)
+        retweetButton.setBackgroundImage(#imageLiteral(resourceName: "retweet"), for: .normal)
+        favoriteButton.setBackgroundImage(#imageLiteral(resourceName: "heart"), for: .normal)
     }
 
 }
