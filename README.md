@@ -1,12 +1,8 @@
-# Project 3 - *Name of App Here*
+# Project 3 - *Twitter 2.0*
 
 **Name of your app** is a basic twitter app to read and compose tweets from the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **15** hours spent in total
-
-## User Stories
-
-The following **required** functionality is completed:
+Time spent: *20* hours spent in total.
 
 - [x] User can sign in using OAuth login flow.
 - [x] User can view last 20 tweets from their home timeline.
