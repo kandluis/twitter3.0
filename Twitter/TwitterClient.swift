@@ -10,16 +10,16 @@ import UIKit
 import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
-    static let consumerKey: String = "LQuzgzLBbZXt64rThNnW72pHx" // "33Sp8Lx26it146Eec7fHN6rWO"
-    static let consumerSecret: String = "OL5X9QImY03C5Av7KVMBSGL6uYIolbzH3RaePDQeIY4ruPgCOE" // "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA"
+    static let consumerKey: String = "33Sp8Lx26it146Eec7fHN6rWO" // "LQuzgzLBbZXt64rThNnW72pHx" //
+    static let consumerSecret: String = "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA" // "OL5X9QImY03C5Av7KVMBSGL6uYIolbzH3RaePDQeIY4ruPgCOE" // 
 
     static let sharedInstance: TwitterClient = TwitterClient(baseURL: URL(string: "https://api.twitter.com"), consumerKey: consumerKey, consumerSecret:consumerSecret)
     
     var loginSuccess: ((Void) -> Void)?
     var loginFailure: ((Error?) -> Void)?
     
-    func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()) {
-        get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (_, response: Any?) in
+    func homeTimeline(parameters: [String: String], success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()) {
+        get("1.1/statuses/home_timeline.json", parameters: parameters, progress: nil, success: { (_, response: Any?) in
                 if let tweetsArray = response as? [NSDictionary] {
                     success(Tweet.tweetsWithArray(dictionaries: tweetsArray))
                 }
@@ -62,9 +62,17 @@ class TwitterClient: BDBOAuth1SessionManager {
         NotificationCenter.default.post(name: User.didLogoutNotification, object: nil)
     }
     
-    func newTweet(tweetText text: String, success: @escaping (Void) -> Void , failure: @escaping (Error) -> Void) {
-        post("1.1/statuses/update.json", parameters: [ "status": text ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
-            success()
+    func newTweet(tweetText text: String, tweet: Tweet?, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void) {
+        post("1.1/statuses/update.json", parameters: [
+            "status": text,
+            "in_reply_to_status_id" : tweet?.id
+            ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+            if let tweetData = response as? NSDictionary {
+                success(Tweet(dictionary: tweetData))
+            }
+            else {
+                failure(NSError(domain: "New tweet response not parsable", code: 1, userInfo: nil))
+            }
         }, failure: {(session: URLSessionDataTask?, error: Error) -> Void in
             failure(error)
         })

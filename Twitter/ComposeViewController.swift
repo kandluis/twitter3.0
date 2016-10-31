@@ -11,6 +11,10 @@ import AFNetworking
 
 let MAX_TWEET_CHARACTERS = 140
 
+protocol ComposeViewControllerDelegate:class {
+    func didFinishCompose(composer: ComposeViewController, didEnterText text: String?)
+}
+
 class ComposeViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var messageTextView: UITextView!
@@ -18,6 +22,11 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var handleLabel: UILabel!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var tweetCountBarButton: UIBarButtonItem!
+    
+    weak var delegate: ComposeViewControllerDelegate?
+    
+    // Original tweet in case we're retweeting.
+    var tweet: Tweet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +37,11 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
             if let url = user.profileImageUrl {
                 userProfileImageView.setImageWith(url)
             }
+        }
+        
+        // See if we're tweeting in reply to someone.
+        if tweet != nil {
+            messageTextView.text = tweet?.user?.handle
         }
         
         // To update values at least once.
@@ -60,16 +74,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func onSendPress(_ sender: Any) {
-        let client = TwitterClient.sharedInstance
-        
-        if let text = messageTextView.text {
-            client.newTweet(tweetText: text, success: {[unowned self] in
-                self.dismiss(animated: true, completion: nil)
-            }, failure: { (error: Error) in
-                // TODO (alert the user that the tweet failed to post -- retry later.
-                print("error posting tweet \(error.localizedDescription)")
-                self.dismiss(animated: true, completion: nil)
-            })
-        }
+        delegate?.didFinishCompose(composer: self, didEnterText: messageTextView.text)
+        dismiss(animated: true, completion: nil)
     }
 }

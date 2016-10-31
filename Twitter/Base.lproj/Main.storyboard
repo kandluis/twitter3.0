@@ -44,6 +44,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="126" y="38"/>
         </scene>
         <!--Tweets-->
         <scene sceneID="Sf7-xk-Y6o">
@@ -65,7 +66,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="138"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9gl-Bf-9Gu" id="yDt-Il-Aob">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="137.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="137"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xfU-DO-hSP">
@@ -332,7 +333,7 @@
             </objects>
             <point key="canvasLocation" x="775.20000000000005" y="39.130434782608695"/>
         </scene>
-        <!--Details View Controller-->
+        <!--Details-->
         <scene sceneID="2U2-2p-re0">
             <objects>
                 <viewController id="CH2-B0-V2s" customClass="DetailsViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
@@ -429,6 +430,20 @@
                                     <action selector="onReplyPress:" destination="CH2-B0-V2s" eventType="touchUpInside" id="fwM-ds-lI8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-wE-7Ac">
+                                <rect key="frame" x="184" y="191.66666666666666" width="30" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="DZa-0z-Kvw"/>
+                                    <constraint firstAttribute="width" constant="30" id="cWx-oD-H5f"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <state key="normal" title="DM">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onDirectMessage:" destination="CH2-B0-V2s" eventType="touchUpInside" id="QgS-BX-ahY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -442,6 +457,7 @@
                             <constraint firstItem="mYS-vR-AzD" firstAttribute="leading" secondItem="V2x-vn-WSe" secondAttribute="leadingMargin" id="SBY-0X-bP1"/>
                             <constraint firstItem="59O-eC-XPA" firstAttribute="leading" secondItem="V2x-vn-WSe" secondAttribute="leadingMargin" id="Tih-Ir-seS"/>
                             <constraint firstItem="fS0-0E-sFm" firstAttribute="top" secondItem="tyT-cR-YPD" secondAttribute="bottom" constant="2" id="Wai-A5-Bv7"/>
+                            <constraint firstItem="zM4-wE-7Ac" firstAttribute="centerY" secondItem="yXg-Dm-yMk" secondAttribute="centerY" id="X4l-VL-UiT"/>
                             <constraint firstItem="W0s-Lp-FAf" firstAttribute="centerY" secondItem="LSc-0z-XM6" secondAttribute="centerY" id="Y62-0P-oyy"/>
                             <constraint firstItem="LSc-0z-XM6" firstAttribute="top" secondItem="mYS-vR-AzD" secondAttribute="bottom" constant="8" id="YMh-u3-BFU"/>
                             <constraint firstItem="Wcg-Nh-PkN" firstAttribute="trailing" secondItem="V2x-vn-WSe" secondAttribute="trailingMargin" id="cmg-th-yXG"/>
@@ -450,19 +466,23 @@
                             <constraint firstItem="7NT-87-DLm" firstAttribute="centerY" secondItem="LSc-0z-XM6" secondAttribute="centerY" id="nTY-hM-bOq"/>
                             <constraint firstItem="7NT-87-DLm" firstAttribute="leading" secondItem="LSc-0z-XM6" secondAttribute="trailing" constant="27" id="nWi-M8-YOX"/>
                             <constraint firstItem="LSc-0z-XM6" firstAttribute="leading" secondItem="V2x-vn-WSe" secondAttribute="leadingMargin" id="oaV-Vg-l9V"/>
+                            <constraint firstItem="zM4-wE-7Ac" firstAttribute="leading" secondItem="yXg-Dm-yMk" secondAttribute="trailing" constant="31" id="qvZ-K3-ZT2"/>
                             <constraint firstItem="Wcg-Nh-PkN" firstAttribute="top" secondItem="59O-eC-XPA" secondAttribute="bottom" constant="8" id="tJ4-Eb-z2J"/>
                             <constraint firstItem="59O-eC-XPA" firstAttribute="top" secondItem="ofw-cM-LZD" secondAttribute="bottom" constant="8" id="vfQ-BQ-J2p"/>
                             <constraint firstItem="z1X-S0-o3g" firstAttribute="centerY" secondItem="LSc-0z-XM6" secondAttribute="centerY" id="zSi-pt-Br2"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="z0n-IT-FHl">
-                        <barButtonItem key="rightBarButtonItem" systemItem="reply" id="sSy-nE-ArI"/>
+                    <navigationItem key="navigationItem" title="Details" id="z0n-IT-FHl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="reply" id="sSy-nE-ArI">
+                            <connections>
+                                <action selector="onReplyNavigation:" destination="CH2-B0-V2s" id="Goi-KP-OMm"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="favoriteButton" destination="yXg-Dm-yMk" id="T6d-Jr-hBB"/>
                         <outlet property="favoriteLabel" destination="W0s-Lp-FAf" id="i8M-t7-XfZ"/>
                         <outlet property="handleLabel" destination="fS0-0E-sFm" id="Fgu-5W-6fE"/>
-                        <outlet property="onReplyPress" destination="LSc-0z-XM6" id="KS3-vC-3li"/>
                         <outlet property="profileImageView" destination="59O-eC-XPA" id="3wJ-hn-9pI"/>
                         <outlet property="replyButton" destination="LSc-0z-XM6" id="J6f-Ia-SEU"/>
                         <outlet property="retweetButton" destination="7NT-87-DLm" id="EOu-LD-EOP"/>
@@ -470,6 +490,7 @@
                         <outlet property="timestampLabel" destination="mYS-vR-AzD" id="zjx-Se-Gx8"/>
                         <outlet property="tweetTextLabel" destination="Wcg-Nh-PkN" id="7FN-hJ-Idt"/>
                         <outlet property="usernameLabel" destination="tyT-cR-YPD" id="Gyf-zq-69F"/>
+                        <segue destination="DWG-YN-Y00" kind="presentation" identifier="detailsToComposeSegue" id="57F-fn-NYA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BDd-Mn-8MW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -492,7 +513,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="APm-CU-Op3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2111.594202898551" y="36.684782608695656"/>
+            <point key="canvasLocation" x="2197" y="38"/>
         </scene>
     </scenes>
     <resources>
@@ -500,4 +521,7 @@
         <image name="reply" width="66" height="46"/>
         <image name="retweet" width="82" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="57F-fn-NYA"/>
+    </inferredMetricsTieBreakers>
 </document>
