@@ -71,6 +71,10 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         tweetCountBarButton.setTitleTextAttributes([NSForegroundColorAttributeName : color], for: .normal)
     }
     
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return textView.text.characters.count < 140
+    }
+    
     @IBAction func onCancelPress(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

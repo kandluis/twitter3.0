@@ -126,6 +126,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tweet.local = true
         tweets?.insert(tweet, at: 0)
         tableView.reloadData()
+        tableView.setContentOffset(CGPoint(x: 0, y: -navigationController!.navigationBar.frame.height - 20), animated: true)
     }
     
     @IBAction func onCompose(_ sender: Any) {
