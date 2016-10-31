@@ -39,10 +39,23 @@ class User: NSObject {
         
     }
     
-    func setProfileImage(image: UIImageView) {
+    func setProfileImage(imageView: UIImageView) {
+        imageView.layer.cornerRadius = 3.0
+        imageView.clipsToBounds = true
+        
         if let profileImageUrl =
             profileImageUrl {
-            image.setImageWith(profileImageUrl)
+            imageView.image = nil
+            let request = URLRequest(url: profileImageUrl)
+            imageView.setImageWith(request, placeholderImage: #imageLiteral(resourceName: "anonymous"), success: { (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
+                imageView.alpha = 0
+                imageView.image = image
+                UIView.animate(withDuration: 1, animations: { 
+                    imageView.alpha = 1
+                })
+            }, failure: { (request: URLRequest, response: HTTPURLResponse?, error: Error) in
+                print("Failed to set image. Error: \(error.localizedDescription)")
+            })
         }
     }
     

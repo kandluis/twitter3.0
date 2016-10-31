@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ComposeViewControllerDelegate {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ComposeViewControllerDelegate, DetailsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -64,7 +64,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
         }, failure: { (error: Error) in
-            print(error.localizedDescription)
+            presentNotification(parentViewController: self, notificationTitle: "Network Request", notificationMessage: "Failed to retrieve new table data: \(error.localizedDescription)", completion: nil)
         })
     }
     
@@ -88,12 +88,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let cell = sender as? UITableViewCell {
                 if let indexPath = tableView.indexPath(for: cell) {
                     vc.tweet = tweets?[indexPath.row]
+                    vc.delegate = self
                 }
             }
         }
         if let root = segue.destination as? UINavigationController {
             if let compose = root.viewControllers[0] as? ComposeViewController {
                 // Receive tweet text!
+                compose.navigationItem.title = "Compose New Message"
                 compose.delegate = self
             }
         }
@@ -103,13 +105,27 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func didFinishCompose(composer: ComposeViewController, didEnterText text: String?) {
         if let text = text {
             TwitterClient.sharedInstance.newTweet(tweetText: text, tweet: nil, success: {[unowned self] (tweet: Tweet) in
-                self.tweets?.insert(tweet, at: 0)
+                self.insertTweet(tweet: tweet)
                 }, failure: { (error: Error) in
-                    // TODO (alert the user that the tweet failed to post -- retry later.
-                    print("error posting tweet \(error.localizedDescription)")
-                    self.dismiss(animated: true, completion: nil)
+                    presentNotification(parentViewController: self, notificationTitle: "New Tweet", notificationMessage: "Failed to post new tweet with error: \(error.localizedDescription)", completion: nil)
             })
         }
+    }
+    
+    func didFinishNewTweet(details: DetailsViewController, newTweet: Tweet) {
+        insertTweet(tweet: newTweet)
+    }
+    
+    func didUpdateTweets(details: DetailsViewController, didUpdate: Bool) {
+        if didUpdate {
+            tableView.reloadData()
+        }
+    }
+    
+    private func insertTweet(tweet: Tweet){
+        tweet.local = true
+        tweets?.insert(tweet, at: 0)
+        tableView.reloadData()
     }
     
     @IBAction func onCompose(_ sender: Any) {

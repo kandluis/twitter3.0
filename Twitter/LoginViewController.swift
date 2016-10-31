@@ -26,7 +26,9 @@ class LoginViewController: UIViewController {
         TwitterClient.sharedInstance.login(success: {
             self.performSegue(withIdentifier: "loginSegue", sender: self)
         }, failure: { (error: Error?) in
-            print("error \(error?.localizedDescription)")
+            let msg = (error == nil) ? "Unknown error" : "Failed to login with error: \(error!.localizedDescription)"
+            
+            presentNotification(parentViewController: self, notificationTitle: "Login Failure", notificationMessage: msg, completion: nil)
         })
     }
     /*

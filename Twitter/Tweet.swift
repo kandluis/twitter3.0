@@ -20,9 +20,14 @@ class Tweet: NSObject {
     var favorited: Bool = false
     var user: User?
     
+    // A local-only tweet (ie, not from server).
+    var local: Bool = false
+    
     private var formatter = DateFormatter()
     
     init(dictionary: NSDictionary) {
+        super.init()
+        
         id = dictionary["id_str"] as? String
         text = dictionary["text"] as? String
         retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
@@ -32,10 +37,10 @@ class Tweet: NSObject {
         if let userData = dictionary["user"] as? NSDictionary {
             user = User(dictionary: userData)
         }
-        if let retweetData = dictionary["retweeted_status"] as? NSDictionary {
-            retweet = Tweet(dictionary: retweetData)
+        if let retweetData = dictionary["retweet_status"] as? NSDictionary {
+            retweet = Tweet(dictionary:
+                retweetData)
         }
-        
         if let timestampString = dictionary["created_at"] as? String {
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
@@ -48,6 +53,27 @@ class Tweet: NSObject {
         return dictionaries.map({ (dict: NSDictionary) -> Tweet in
             Tweet(dictionary: dict)
         })
+    }
+    
+    private func getRetweet(tweetData: NSDictionary) {
+        if let retweetId = getRetweetId(tweetData: tweetData) {
+            TwitterClient.sharedInstance.getTweet(tweet_id: retweetId, success: {(tweet: Tweet) -> Void in
+                self.retweet = tweet
+            }, failure: { (error: Error) -> Void in
+                print("Failed to retrieve retweets \(error.localizedDescription)")
+            })
+        }
+        
+    }
+    
+    // Recursively discovers the original tweet id_str.
+    private func getRetweetId(tweetData: NSDictionary) -> String? {
+        if let retweetData = tweetData["retweet_status"] as? NSDictionary {
+            return getRetweetId(tweetData: retweetData)
+        }
+        else {
+            return tweetData["id_str"] as? String
+        }
     }
     
     func detailedTimestamp() -> String {
@@ -66,7 +92,7 @@ class Tweet: NSObject {
             let elapsedTime = date.timeIntervalSinceNow
             let ti = -Int(elapsedTime)
             let days = (ti / (60*60*25))
-            let hours = (ti / 3600) % 24
+            let hours = (ti / (60*60)) % 24
             let minutes = (ti / 60) % 60
             let seconds = ti % 60
             if days > 3 {

@@ -24,15 +24,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Olc-GY-TOb">
-                                <rect key="frame" x="145.66666666666669" y="353" width="123.00000000000006" height="30"/>
-                                <state key="normal" title="Login With Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Olc-GY-TOb">
+                                <rect key="frame" x="50.333333333333343" y="327" width="314" height="83"/>
+                                <color key="backgroundColor" red="0.70206767319999996" green="0.81365257499999999" blue="0.9426891208" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.70206767319999996" green="0.81365257499999999" blue="0.9426891208" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="20" height="0.0"/>
+                                <state key="normal" image="Icon-App-83.5x83.5">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="    Login to Twitter">
+                                            <attributes>
+                                                <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <font key="NSFont" size="27" name="HelveticaNeue-Bold"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
                                 <connections>
                                     <action selector="onLoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ya3-Ih-Xnx"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.70206767320632935" green="0.81365257501602173" blue="0.94268912076950073" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Olc-GY-TOb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="06D-W1-WJt"/>
                             <constraint firstItem="Olc-GY-TOb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rj9-FG-5xM"/>
@@ -44,7 +57,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="126" y="38"/>
+            <point key="canvasLocation" x="124.6376811594203" y="37.5"/>
         </scene>
         <!--Tweets-->
         <scene sceneID="Sf7-xk-Y6o">
@@ -299,7 +312,7 @@
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="140" id="PSE-Zs-8Tw">
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
@@ -517,11 +530,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Icon-App-83.5x83.5" width="83" height="83"/>
         <image name="heart" width="55" height="52"/>
         <image name="reply" width="66" height="46"/>
         <image name="retweet" width="82" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="57F-fn-NYA"/>
+        <segue reference="8gP-Bt-PW6"/>
     </inferredMetricsTieBreakers>
 </document>

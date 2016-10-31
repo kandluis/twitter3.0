@@ -10,8 +10,8 @@ import UIKit
 import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
-    static let consumerKey: String = "33Sp8Lx26it146Eec7fHN6rWO" // "LQuzgzLBbZXt64rThNnW72pHx" //
-    static let consumerSecret: String = "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA" // "OL5X9QImY03C5Av7KVMBSGL6uYIolbzH3RaePDQeIY4ruPgCOE" // 
+    static let consumerKey: String = "LQuzgzLBbZXt64rThNnW72pHx" // "33Sp8Lx26it146Eec7fHN6rWO" //
+    static let consumerSecret: String = "OL5X9QImY03C5Av7KVMBSGL6uYIolbzH3RaePDQeIY4ruPgCOE"// "hpp2yHqULGuZ64FxhrNZKOPLW6R9ARxWpMSHNIEOAgREzZ2UzA"
 
     static let sharedInstance: TwitterClient = TwitterClient(baseURL: URL(string: "https://api.twitter.com"), consumerKey: consumerKey, consumerSecret:consumerSecret)
     
@@ -62,11 +62,22 @@ class TwitterClient: BDBOAuth1SessionManager {
         NotificationCenter.default.post(name: User.didLogoutNotification, object: nil)
     }
     
+    func getTweet(tweet_id: String, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void) {
+        get("1.1/statuses/show/\(tweet_id).json?include_my_retweet=1", parameters: nil, progress: nil, success: { (_, response: Any?) in
+            if let userDictionary = response as? NSDictionary {
+                success(Tweet(dictionary: userDictionary))
+            }
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        })
+    }
+    
     func newTweet(tweetText text: String, tweet: Tweet?, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void) {
-        post("1.1/statuses/update.json", parameters: [
-            "status": text,
-            "in_reply_to_status_id" : tweet?.id
-            ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+        var parameters = ["status": text]
+        if let reply_id = tweet?.id {
+            parameters["in_reply_to_status_id"] = reply_id
+        }
+        post("1.1/statuses/update.json", parameters: parameters, progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
             if let tweetData = response as? NSDictionary {
                 success(Tweet(dictionary: tweetData))
             }
@@ -74,6 +85,19 @@ class TwitterClient: BDBOAuth1SessionManager {
                 failure(NSError(domain: "New tweet response not parsable", code: 1, userInfo: nil))
             }
         }, failure: {(session: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+    }
+    
+    func unfavorite(tweet: Tweet, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
+        post("1.1/favorites/destroy.json", parameters: [ "id" : tweet.id ], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in
+            if let tweetData = response as? NSDictionary {
+                success(Tweet(dictionary: tweetData))
+            }
+            else {
+                failure(NSError(domain: "Unfavorite response not parsable", code: 1, userInfo: nil))
+            }
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
             failure(error)
         })
     }
@@ -122,7 +146,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func reply(tweet: Tweet, withText reply: String, success: @escaping (Tweet) -> Void , failure: @escaping (Error) -> Void){
-        post("1.1/direct_message/new.json", parameters: [
+        post("1.1/direct_messages/new.json", parameters: [
             "user_id": tweet.user?.id,
             "screen_name": tweet.user?.screenName,
             "text": reply], progress: nil, success: {(session: URLSessionDataTask, response: Any?) -> Void in

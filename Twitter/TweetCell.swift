@@ -32,7 +32,6 @@ class TweetCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -49,7 +48,7 @@ class TweetCell: UITableViewCell {
         tweetUserHandle.text = tweet.user?.handle
         favoriteLabel.text = String(tweet.favoritesCount)
         retweetLabel.text = String(tweet.retweetCount)
-        tweet.user?.setProfileImage(image: tweetUserImage)
+        tweet.user?.setProfileImage(imageView: tweetUserImage)
         
         // Set images for tweet.
         if tweet.favorited {
@@ -58,6 +57,15 @@ class TweetCell: UITableViewCell {
         if tweet.retweeted {
             retweetButton.setBackgroundImage(#imageLiteral(resourceName: "retweet_colored"), for: .normal)
         }
+        
+        if tweet.local {
+            let color = UIColor(displayP3Red: 26/255.0, green: 161/255.0, blue: 242.0/255.0, alpha: 0.3).cgColor
+            UIView.animate(withDuration: 2.0, animations: {[unowned self] in
+                self.contentView.layer.borderColor = color
+                self.contentView.layer.borderWidth = 2
+            })
+            
+        }
     }
     
     func reset() {
@@ -65,10 +73,12 @@ class TweetCell: UITableViewCell {
         tweetTimestampLabel.text = ""
         tweetUserName.text = ""
         tweetTextLabel.text = ""
-        tweetUserImage.image = nil
         tweetUserHandle.text = ""
         favoriteLabel.text = "0"
         retweetLabel.text = "0"
+        
+        contentView.layer.borderColor = nil
+        contentView.layer.borderWidth = 0
         
         // reset images
         replyButton.setBackgroundImage(#imageLiteral(resourceName: "reply"), for: .normal)

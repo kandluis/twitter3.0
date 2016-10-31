@@ -41,7 +41,9 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         
         // See if we're tweeting in reply to someone.
         if tweet != nil {
-            messageTextView.text = tweet?.user?.handle
+            if let handle = tweet?.user?.handle {
+                messageTextView.text = "\(handle) "
+            }
         }
         
         // To update values at least once.
@@ -65,7 +67,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         let count = textView.text.characters.count
         tweetCountBarButton.title = String(count)
-        let color = (count > MAX_TWEET_CHARACTERS) ? UIColor.red : UIColor.lightGray
+        let color = (count > MAX_TWEET_CHARACTERS) ? UIColor.red : UIColor.white
         tweetCountBarButton.setTitleTextAttributes([NSForegroundColorAttributeName : color], for: .normal)
     }
     
