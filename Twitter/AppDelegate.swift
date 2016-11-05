@@ -20,8 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if User.currentUser != nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController")
-            window?.rootViewController = vc
+            let hamburgerViewController = storyboard.instantiateViewController(withIdentifier: "HamburgerViewController") as! HamburgerViewController
+            let menuViewController = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+            menuViewController.hamburgerViewController = hamburgerViewController
+            hamburgerViewController.menuViewController = menuViewController
+            
+            window?.rootViewController = hamburgerViewController
         }
         
         NotificationCenter.default.addObserver(forName: User.didLogoutNotification, object: nil, queue: OperationQueue.main, using: {[unowned self](notification: Notification) -> Void in

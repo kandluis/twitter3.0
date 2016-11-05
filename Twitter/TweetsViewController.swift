@@ -12,6 +12,8 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     
+    var menuTitle = "Timeline"
+    
     var tweets: [Tweet]?
     var isMoreDataLoading = false
     var refreshControl: UIRefreshControl!
