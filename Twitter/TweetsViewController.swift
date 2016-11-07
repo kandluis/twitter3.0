@@ -49,12 +49,29 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell") as! TweetCell
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(TweetsViewController.onProfileTap))
+        cell.tweetUserImage.isUserInteractionEnabled = true
+        cell.tweetUserImage.addGestureRecognizer(tap)
+        
         cell.tweet = tweets![indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func onProfileTap(sender: UITapGestureRecognizer) {
+        guard let imageView = sender.view as? UIImageView else { return }
+        guard let cell = imageView.superview?.superview as? TweetCell else { return }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let nc = storyboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as? UINavigationController
+        guard let pv = nc?.topViewController as? ProfileViewController else { return }
+        
+        pv.user = cell.tweet.user
+        show(pv, sender: self)
     }
     
     func refreshAction() {

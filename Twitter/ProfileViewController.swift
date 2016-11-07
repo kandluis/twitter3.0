@@ -41,12 +41,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshAction), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         
-        // To show tweets.
-        refreshAction()
-        
         // Setup profile information
         setUpProfile()
         
+        // To show tweets.
+        refreshAction()
     }
     
     private func setUpProfile() {
@@ -82,7 +81,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let userId = user?.id {
             parameters["user_id"] = userId
         }
-        if let username = user?.name {
+        if let username = user?.screenName {
             parameters["screen_name"] = username
         }
         client.userTweets(parameters: parameters, success: { (tweets: [Tweet]) in
