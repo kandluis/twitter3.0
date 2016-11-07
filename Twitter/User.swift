@@ -17,6 +17,11 @@ class User: NSObject {
     var profileImageUrl: URL?
     var tagline: String?
     
+    var tweetCount: Int = 0
+    var followingCount: Int = 0
+    var followersCount: Int = 0
+
+    
     var handle: String? {
         if let screenName = self.screenName {
             return "@\(screenName)"
@@ -36,6 +41,9 @@ class User: NSObject {
         if let profileImageUrlString = dictionary["profile_image_url_https"] as? String {
             profileImageUrl = URL(string: profileImageUrlString)        }
         tagline = dictionary["description"] as? String
+        tweetCount = (dictionary["statuses_count"] as? Int) ?? 0
+        followersCount = (dictionary["followers_count"] as? Int) ?? 0
+        followingCount = (dictionary["friends_count"] as? Int) ?? 0
         
     }
     
