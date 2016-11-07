@@ -18,7 +18,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var viewControllers = [UIViewController]()
     private var titles = [String]()
     
-    var hamburgerViewController: HamburgerViewController!
+    weak var hamburgerViewController: HamburgerViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()

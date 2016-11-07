@@ -21,7 +21,7 @@ class HamburgerViewController: UIViewController {
     @IBOutlet weak var leftMarginConstraint: NSLayoutConstraint!
     private var originalLeftMargin: CGFloat!
     
-    var menuViewController: MenuViewController! {
+    weak var menuViewController: MenuViewController! {
         didSet(oldMenuViewController) {
             view.layoutIfNeeded()
             
@@ -34,7 +34,7 @@ class HamburgerViewController: UIViewController {
         }
     }
     
-    var contentViewController: UIViewController! {
+    weak var contentViewController: UIViewController! {
         didSet(oldContentViewController) {
             view.layoutIfNeeded()
             
@@ -73,7 +73,7 @@ class HamburgerViewController: UIViewController {
     }
     
     private func snapMenu(_ state: MenuState) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: {[unowned self] in
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: {[unowned self] in
             switch state {
             case .open:
                 self.leftMarginConstraint.constant = self.view.frame.size.width -  50

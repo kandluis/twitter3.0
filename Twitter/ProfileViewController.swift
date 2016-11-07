@@ -11,6 +11,8 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     var menuTitle = "Profile"
+    
+    var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()

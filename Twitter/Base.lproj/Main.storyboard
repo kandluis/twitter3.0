@@ -239,7 +239,7 @@
             </objects>
             <point key="canvasLocation" x="774" y="752"/>
         </scene>
-        <!--View Controller-->
+        <!--Me-->
         <scene sceneID="zJr-gi-dTV">
             <objects>
                 <viewController id="T8Y-XU-42F" sceneMemberID="viewController">
@@ -250,13 +250,19 @@
                     <view key="view" contentMode="scaleToFill" id="GZA-aB-d73">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9mU-4m-5Kx">
+                                <rect key="frame" x="0.0" y="64" width="414" height="181"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="cl9-ru-pp4"/>
+                    <navigationItem key="navigationItem" title="Me" id="cl9-ru-pp4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u35-1e-bMx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1580" y="752"/>
+            <point key="canvasLocation" x="1579.7101449275362" y="751.63043478260875"/>
         </scene>
         <!--Compose-->
         <scene sceneID="PNY-Se-mGl">
